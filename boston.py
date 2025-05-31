@@ -4,7 +4,7 @@ import os
 import numpy as np
 from numpy.typing import NDArray
 import requests
-from loguru import logger
+import logging
 
 from nn.activation import ReLU, Linear
 from nn.layer import Dense
@@ -13,6 +13,12 @@ from nn.model import NeuralNetwork
 from nn.optimizer import RMSprop
 
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
+
 def _download_url(url: str, data_dir: str) -> str:
     """Download file at url to data_dir"""
 
@@ -20,7 +26,7 @@ def _download_url(url: str, data_dir: str) -> str:
     file_path = os.path.join(data_dir, file_name)
 
     if os.path.isfile(file_path):
-        logger.warning(f"{file_path} already exists")
+        logger.warning(f"Reading file at path {file_path}")
     else:
         logger.info(f"Downloading file from {url}")
         res = requests.get(url=url, stream=True)
